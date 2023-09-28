@@ -45,6 +45,35 @@ Run > Edit Configuration > +버튼 > Smart Tomcat 에 들어가서 다운 받아
 이후 프로젝트를 실행시키면 웹에서 우리가 코딩한 내용을 확인할 수 있다.
 자동으로 생성되는 index.jsp의 코드를 수정한 후 정상적으로 작동되는지 확인하는 작업을 진행하였다.
 
+<br><br>
+
+위 방법은 무료버전에서 하는 것 같고..
+내가 사용하는 유료버전에서는 다음과 같은 방법을 사용을 보통 사용하는 것 같다. <br>
+Run > Edit Configuration > +버튼 > Tomcat Server > Local 
+
+<img width="793" alt="image" src="https://github.com/orieasy1/2023-2-WebStudy-backend/assets/129071350/29eb5e09-a61f-46c9-a1ca-9e2c6730f760">
+
+그럼 위에 처럼 밑부분에 Warning: No artifacts marked for deployment라는 에러가 뜰 수 있다.
+그러면 오른쪽에 위치한 fix 버튼을 눌러 deployment를 설정해주도록한다.
+둘 중 mvn-tomcat-webapp: war exploded를 선택해주면
+
+<img width="780" alt="image" src="https://github.com/orieasy1/2023-2-WebStudy-backend/assets/129071350/94497264-49e4-41f7-8832-b520c66dbf45">
+
+다음과 같은 창이 뜨게 되는데 그럼 오류가 해결된 것이다.
+<br><br>
+위 사진처럼 Application context를 그대로 두면 프로젝트를 실행할 때 저 주소를 다 쳐야함으로 그냥 /로 수정하여 localhost:8081로 접속할 수 이도록 해준다.
+
+충돌을 방지하기 위하여 포트번호를 8080에서 8081로 바꾸었다.
+
+
+**Tomcat 서버 실행 오류 발생** <br>
+연동을 끝내고 프로젝트를 시작하고 로컬호스트에 띄우려는데.. 또 오류가 발생했다.
+왤케 나는 오류가 자주 발생하는 거지...
+처음에는 server.xml을 찾을 수 없다는 거였고 두번째는 jar파일을 찾을 수 없다는 것이었다.
+<br><br>
+그래서 apache tomcat 폴더의 conf 폴더에 들어가서 살펴보니까 server.xml, context.xml 등등 파일이 하나도 없었다..
+이유는 모르겠지만... 그래서 일단 지우고 톰캣 사이트에 들어가서 다시 다운받았다.
+다운받은 뒤 conf 폴더에 파일들이 다 있는 걸 확인하고 다시 연동해서 실행하니까 작동되었다.
 
 
 
