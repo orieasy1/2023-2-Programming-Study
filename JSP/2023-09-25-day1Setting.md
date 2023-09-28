@@ -45,7 +45,7 @@ Run > Edit Configuration > +버튼 > Smart Tomcat 에 들어가서 다운 받아
 이후 프로젝트를 실행시키면 웹에서 우리가 코딩한 내용을 확인할 수 있다.
 자동으로 생성되는 index.jsp의 코드를 수정한 후 정상적으로 작동되는지 확인하는 작업을 진행하였다.
 
-<br><br>
+<br>
 
 위 방법은 무료버전에서 하는 것 같고..
 내가 사용하는 유료버전에서는 다음과 같은 방법을 사용을 보통 사용하는 것 같다. <br>
@@ -64,6 +64,18 @@ Run > Edit Configuration > +버튼 > Tomcat Server > Local
 위 사진처럼 Application context를 그대로 두면 프로젝트를 실행할 때 저 주소를 다 쳐야함으로 그냥 /로 수정하여 localhost:8081로 접속할 수 이도록 해준다.
 
 충돌을 방지하기 위하여 포트번호를 8080에서 8081로 바꾸었다.
+
+<br><br>
+
+<h3>오류 발생 및 해결을 위한 몸부림 1 : Tomcat 서버 실행 오류 발생</h3>
+연동을 끝내고 프로젝트를 시작하고 로컬호스트에 띄우려는데.. 또 오류가 발생했다.<br>
+왤케 나는 오류가 자주 발생하는 거지... <br>
+처음에는 server.xml을 찾을 수 없다는 거였고 두번째는 jar파일을 찾을 수 없다는 것이었다.
+<br><br>
+그래서 apache tomcat 폴더의 conf 폴더에 들어가서 살펴보니까 server.xml, context.xml 등등 파일이 하나도 없었다.. <br>
+이유는 모르겠지만... 그래서 일단 지우고 톰캣 사이트에 들어가서 다시 다운받았다. <br>
+다운받은 뒤 conf 폴더에 파일들이 다 있는 걸 확인하고 다시 연동해서 실행하니까 작동되었다.
+아마도 다운로드 과정에서 문제가 발생하지 않을까?
 
 <br><br>
 
@@ -102,25 +114,7 @@ New > Directory > java 를 클릭하면 자바 디렉토리가 생성된다.
 <br>
 어노테이션 중에 @WebServlet("/hello")가 있는데 web.xml 파일을 사용하지 않고도 서블릿을 선언하고 url 매핑을 설정할 수 있도록 한다.
 class 수준에서 사용되는 어노테이션이다.
-
-<h3>오류 발생 및 해결을 위한 몸부림</h3>
-**Tomcat 서버 실행 오류 발생** <br>
-연동을 끝내고 프로젝트를 시작하고 로컬호스트에 띄우려는데.. 또 오류가 발생했다.
-왤케 나는 오류가 자주 발생하는 거지...
-처음에는 server.xml을 찾을 수 없다는 거였고 두번째는 jar파일을 찾을 수 없다는 것이었다.
-<br><br>
-그래서 apache tomcat 폴더의 conf 폴더에 들어가서 살펴보니까 server.xml, context.xml 등등 파일이 하나도 없었다..
-이유는 모르겠지만... 그래서 일단 지우고 톰캣 사이트에 들어가서 다시 다운받았다.
-다운받은 뒤 conf 폴더에 파일들이 다 있는 걸 확인하고 다시 연동해서 실행하니까 작동되었다.
-
-<br> 
-
-**web.xml 오류** <br>
-나를 또 힘들게 했던 친구는 처음 프로젝트를 생성할 때 만들어지는 index.jsp를 삭제하면... 그 뒤에 만든 다른 파일을 run 시켰을 때 서버와 연결이 안된다는 점인데..
-왜 그럴까 고민하다가 web.xml을 확인해보았더니 mapping과 설정이 전혀 안되어있었다..
-<br><br>
-이유는 바보 같이 maven repository에서 관련 설정을 들고와서 pom.xml에 입력을 해야 제대로 된 jsp 개발을 할 수 있는데 이 부분을 안해줬기 때문이다.
-설정을 안해줬는데 제대로 작동할리가..
+톰캣이 건물주라면 우리가 작성하는 프로젝트는 그 건물의 입주민으로 생각하면 된다.
 
 <br><br>
 
@@ -209,4 +203,103 @@ servlet-api, servlet.jsp-api, servlet.jsp.jstl이 설정 사항이다.
 
 <br><br>
 
-<
+<h3>오류 발생 및 해결을 위한 몸부림2 : 404 에러</h3>
+나를 또 힘들게 했던 친구는 처음 프로젝트를 생성할 때 만들어지는 index.jsp를 삭제하면... 그 뒤에 만든 다른 파일을 run 시켰을 때 서버와 연결이 안되고 자꾸 404 에러가 떴다.
+<br>
+또 분명 매핑까지 해서 서블릿 페이지를 작성했는데 localhost:8081뒤에 /hello를 붙이면 자꾸 에러가 떴다.
+<br>
+왜 그럴까 고민하다가 web.xml을 확인해보았더니 설정이 전혀 안되어있었다..
+servlet 등록도 안해놓았고...
+
+첫 번째 문제가 발생했을 시점에는 사실 까먹고 maven repository에서 관련 설정을 들고와서 pom.xml에 입력을 하는 것을 까먹었다.
+관련 사항을 입력해 줘야 제대로 된 jsp 개발을 할 수 있는데 이 부분을 안해줬기 때문이다.
+설정을 안해줬는데 제대로 작동할리가..
+<br><br>
+그래서 위에서 입력한 사항 처럼 작성해줬는데도 자꾸 오류가 발생했다.
+어디서 문제가 발생했는지 아예 모르겠어서 톰캣 conf 파일 속에 있는 web.xml을 열어보았다.
+
+```
+<web-app xmlns="https://jakarta.ee/xml/ns/jakartaee"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee
+                      https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
+  version="6.0">
+```
+
+라는 코드가 있어서 intellij의 web.xml에도 똑같이 입력해주고 pom.xml에도 maven repository에 다시 접속해서 같은 버전의 코드를 복사 붙여넣기해서 수정을 해주었더니 404오류가 해결되었다.
+
+<br>
+
+**최종 pom.xml 코드**
+
+```xml
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.example</groupId>
+  <artifactId>Servlet_Prj</artifactId>
+  <packaging>war</packaging>
+  <version>1.0-SNAPSHOT</version>
+  <name>Servlet_Prj Maven Webapp</name>
+  <url>http://maven.apache.org</url>
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/jakarta.servlet/jakarta.servlet-api -->
+    <dependency>
+      <groupId>jakarta.servlet</groupId>
+      <artifactId>jakarta.servlet-api</artifactId>
+      <version>6.0.0</version>
+      <scope>provided</scope>
+    </dependency>
+
+
+    <!-- https://mvnrepository.com/artifact/javax.servlet.jsp/javax.servlet.jsp-api -->
+    <dependency>
+      <groupId>javax.servlet.jsp</groupId>
+      <artifactId>javax.servlet.jsp-api</artifactId>
+      <version>2.3.3</version>
+      <scope>provided</scope>
+    </dependency>
+
+
+    <!-- https://mvnrepository.com/artifact/javax.servlet/jstl -->
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>jstl</artifactId>
+      <version>1.2</version>
+    </dependency>
+  </dependencies>
+  <!-- Maven 플러그인 설정 -->
+  <build>
+    <finalName>Servlet_Prj</finalName>
+    <plugins>
+      <!-- Maven Compiler Plugin 설정 -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.8.1</version>
+        <configuration>
+          <source>17</source> <!-- Java 버전 -->
+          <target>17</target> <!-- Java 버전 -->
+        </configuration>
+      </plugin>
+      <!-- Maven War Plugin 설정 -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <version>3.3.1</version>
+        <configuration>
+          <warSourceDirectory>src/main/webapp</warSourceDirectory>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>
+```
