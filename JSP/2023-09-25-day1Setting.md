@@ -303,3 +303,51 @@ servlet 등록도 안해놓았고...
 
 </project>
 ```
+
+<br>
+
+이렇게 pom.xml에 작성해주고 java 파일에 HelloServlet을 다음과 같이 만든 뒤
+
+```java
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+import java.io.IOException;
+
+@WebServlet("/hello")
+public class HelloServlet extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setCharacterEncoding("UTF-8"); //들어오는 데이터를 UTF-8로 해석하겠다.
+        resp.setCharacterEncoding("UTF-8"); //완성되는 HTML의 인코딩을 UTF-8로 하겠다.
+        resp.setContentType("text/html; charset-utf-8"); //브라우저에게 우리가 만든 결과물이 UTF-8이라고 알리는 의미
+        //이렇게 해두면 한글이 안깨진다.
+
+        resp.getWriter().append("안녕하세요!");
+    }
+}
+```
+
+web.xml 파일에 이렇게 작성해주고
+
+```xml
+<web-app xmlns="https://jakarta.ee/xml/ns/jakartaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee
+                      https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
+         version="6.0">
+
+    <servlet>
+        <servlet-name>helloServlet</servlet-name>
+        <servlet-class>HelloServlet</servlet-class>
+    </servlet>
+</web-app>
+```
+
+다시 run을 돌리면.. 드디어 밑과 같은 페이지가 나온다.
+
+<img width="358" alt="image" src="https://github.com/orieasy1/2023-2-WebStudy-backend/assets/129071350/f1a4f857-ceed-4054-868f-038245d468d9">
+
