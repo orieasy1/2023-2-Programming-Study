@@ -77,11 +77,96 @@ Run > Edit Configuration > +버튼 > Tomcat Server > Local
 이유는 모르겠지만... 그래서 일단 지우고 톰캣 사이트에 들어가서 다시 다운받았다.
 다운받은 뒤 conf 폴더에 파일들이 다 있는 걸 확인하고 다시 연동해서 실행하니까 작동되었다.
 
-<br><br> 
+<br> 
 
 **web.xml 오류** <br>
 나를 또 힘들게 했던 친구는 처음 프로젝트를 생성할 때 만들어지는 index.jsp를 삭제하면... 그 뒤에 만든 다른 파일을 run 시켰을 때 서버와 연결이 안된다는 점인데..
 왜 그럴까 고민하다가 web.xml을 확인해보았더니 mapping과 설정이 전혀 안되어있었다..
+<br><br>
+이유는 바보 같이 maven repository에서 관련 설정을 들고와서 pom.xml에 입력을 해야 제대로 된 jsp 개발을 할 수 있는데 이 부분을 안해줬기 때문이다.
+설정을 안해줬는데 제대로 작동할리가..
+
+<br><br>
+
+<h3>pom.xml 설정</h3>
+Maven Repository 사이트에 들어가서 Jakarta Servlet을 검색한 뒤 6.0버전을 클릭해 복사한 후 pom.xml에 입력해준다.
+옆에 M과 동그란 창이 뜨는데 그 것을 클릭해줘야 우리 프로젝트에 적용이 된다.
+
+위 코드를 포함해 3가지를 pom.xml에 설정해주려고 한다.
+servlet-api, servlet.jsp-api, servlet.jsp.jstl이 설정 사항이다.
+거기에 Maven 플러그인 설정을 해줘야한다.
+
+이클립스에서 spring을 공부하면서 maven project를 처음 만져봤는데 intellij에서 JSP 웹 애플리케이션을 개발하려면 Maven을 사용하여 프로젝트를 설정해야하기에 이클립스에서 했던 것과 비슷한(같은) 과정이 필요한 것이다.
+<br><br>
+다음은 작성한 pom.xml 코드이다.
+
+```xml
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.example</groupId>
+  <artifactId>Servlet_Prj</artifactId>
+  <packaging>war</packaging>
+  <version>1.0-SNAPSHOT</version>
+  <name>Servlet_Prj Maven Webapp</name>
+  <url>http://maven.apache.org</url>
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+      <version>4.0.1</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/javax.servlet.jsp/javax.servlet.jsp-api -->
+    <dependency>
+      <groupId>javax.servlet.jsp</groupId>
+      <artifactId>javax.servlet.jsp-api</artifactId>
+      <version>2.3.3</version>
+      <scope>provided</scope>
+    </dependency>
 
 
+    <!-- https://mvnrepository.com/artifact/javax.servlet/jstl -->
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>jstl</artifactId>
+      <version>1.2</version>
+    </dependency>
+  </dependencies>
+  <!-- Maven 플러그인 설정 -->
+  <build>
+    <finalName>Servlet_Prj</finalName>
+    <plugins>
+      <!-- Maven Compiler Plugin 설정 -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.8.1</version>
+        <configuration>
+          <source>17</source> <!-- Java 버전 -->
+          <target>17</target> <!-- Java 버전 -->
+        </configuration>
+      </plugin>
+      <!-- Maven War Plugin 설정 -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <version>3.3.1</version>
+        <configuration>
+          <warSourceDirectory>src/main/webapp</warSourceDirectory>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 
+</project>
+```
